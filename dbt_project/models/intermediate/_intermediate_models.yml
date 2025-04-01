@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: int_orders_with_ads
+    description: >
+      Intermediate model combining Shopify orders and Google Ads click data.
+      This model performs the following transformations:
+      - Joins order data with click data using session_id
+      - Handles cases where orders might not have associated clicks
+      - Standardizes date formats across both sources
+      - Adds attribution window logic (30-day lookback)
+      - Validates data consistency between sources
+    tags: 
+      - shopify
+      - ads
+      - intermediate
+      - attribution
+    meta:
+      owner: data_engineering_team
+      data_owner: "data.engineering@company.com"
+      refreshed: "hourly"
+      upstream_sources: ["shopify", "google_ads"]
+      contains_pii: true
+      sla_hours: 2
+      maturity: "production"
+      business_impact: "high"
+    columns:
+      - name: order_id
+        description: '{{ doc("order_id") }}'
+        data_type: STRING
+        tests:
+          - unique
+          - not_null
+      - name: order_date
+        description: '{{ doc("order_date") }}'
+        data_type: TIMESTAMP
+        tests:
+          - not_null
+      - name: user_id
+        description: '{{ doc("user_id") }}'
+        data_type: STRING
+        tests:
+          - not_null
+      - name: session_id
+        description: '{{ doc("session_id") }}'
+        data_type: STRING
+        tests:
+          - not_null
+      - name: campaign_id
+        description: '{{ doc("campaign_id") }}'
+        data_type: STRING
+      - name: total_price
+        description: '{{ doc("total_price") }}'
+        data_type: FLOAT
+        tests:
+          - not_null

@@ -1,0 +1,39 @@
+version: 2
+
+sources:
+  - name: google_ads
+    description: >
+      Raw advertising data from Google Ads platform.
+      Data is loaded via Fivetran connector with 15-minute sync frequency.
+      Contains all clickstream and campaign performance data.
+    schema: raw
+    tables:
+      - name: clicks
+        description: >
+          Clickstream data by campaign and user.
+          Contains detailed information about ad clicks including:
+          - Click timestamps and user sessions
+          - Campaign and ad group information
+          - Cost and performance metrics
+        columns:
+          - name: click_id
+            description: '{{ doc("click_id") }}'
+            data_type: STRING
+            tests:
+              - unique
+              - not_null
+          - name: session_id
+            description: '{{ doc("session_id") }}'
+            data_type: STRING
+            tests:
+              - not_null
+          - name: click_date
+            description: '{{ doc("click_date") }}'
+            data_type: TIMESTAMP
+            tests:
+              - not_null
+          - name: campaign_id
+            description: '{{ doc("campaign_id") }}'
+            data_type: STRING
+            tests:
+              - not_null

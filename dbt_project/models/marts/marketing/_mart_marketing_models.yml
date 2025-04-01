@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: fct_revenue_by_campaign
+    description: >
+      Aggregates order details with campaign information to provide a comprehensive view of campaign performance.
+      This model serves as the primary source for marketing analytics and includes:
+      - Campaign-level revenue metrics
+      - Order counts and average order values
+      - Attribution window calculations
+      - Historical performance trends
+      Used by marketing team to evaluate ROI on campaigns and optimize budget allocation.
+    tags: 
+      - marketing
+      - revenue
+      - attribution
+      - mart
+    meta:
+      owner: marketing_analytics
+      data_owner: "marketing.analytics@company.com"
+      refreshed: "daily"
+      upstream_sources: ["shopify", "google_ads"]
+      contains_pii: false
+      sla_hours: 4
+      maturity: "production"
+      business_impact: "high"
+      related_dashboards: 
+        - "marketing_campaign_overview"
+        - "executive_summary"
+        - "campaign_roi_analysis"
+    columns:
+      - name: campaign_id
+        description: '{{ doc("campaign_id") }}'
+        data_type: STRING
+      - name: orders_count
+        description: '{{ doc("orders_count") }}'
+        data_type: INTEGER
+        tests:
+          - not_null
+      - name: revenue
+        description: '{{ doc("revenue") }}'
+        data_type: FLOAT
+        tests:
+          - not_null

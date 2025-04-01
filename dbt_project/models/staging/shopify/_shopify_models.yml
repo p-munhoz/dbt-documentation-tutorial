@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: >
+      Stage table for orders data from Shopify.
+      This model performs initial cleaning and standardization of raw order data,
+      including:
+      - Type casting of fields to appropriate data types
+      - Standardization of date formats
+      - Removal of duplicate records
+      - Basic data quality checks
+    tags: 
+      - shopify
+      - staging
+      - ecommerce
+    meta:
+      owner: ecommerce_team
+      data_owner: "ecommerce.team@company.com"
+      refreshed: "hourly"
+      upstream_sources: ["shopify"]
+      contains_pii: true
+      sla_hours: 1
+      maturity: "production"
+    columns:
+      - name: order_id
+        description: '{{ doc("order_id") }}'
+        data_type: STRING
+        tests:
+          - unique
+          - not_null
+      - name: user_id
+        description: '{{ doc("user_id") }}'
+        data_type: STRING
+        tests:
+          - not_null
+      - name: session_id
+        description: '{{ doc("session_id") }}'
+        data_type: STRING
+        tests:
+          - not_null
+      - name: order_date
+        description: '{{ doc("order_date") }}'
+        data_type: TIMESTAMP
+        tests:
+          - not_null
+      - name: total_price
+        description: '{{ doc("total_price") }}'
+        data_type: FLOAT
+        tests:
+          - not_null

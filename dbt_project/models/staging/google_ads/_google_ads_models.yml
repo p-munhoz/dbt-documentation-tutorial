@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: stg_clicks
+    description: >
+      Stage table for clicks data from Google Ads.
+      This model performs initial cleaning and standardization of raw click data,
+      including:
+      - Type casting of fields to appropriate data types
+      - Standardization of date formats
+      - Removal of duplicate records
+      - Basic data quality checks
+      - Session validation and deduplication
+    tags: 
+      - ads
+      - staging
+      - marketing
+    meta:
+      owner: growth_team
+      data_owner: "growth.team@company.com"
+      refreshed: "hourly"
+      upstream_sources: ["google_ads"]
+      contains_pii: true
+      sla_hours: 1
+      maturity: "production"
+    columns:
+      - name: click_id
+        description: '{{ doc("click_id") }}'
+        data_type: STRING
+        tests:
+          - unique
+          - not_null
+      - name: session_id
+        description: '{{ doc("session_id") }}'
+        data_type: STRING
+        tests:
+          - not_null
+      - name: campaign_id
+        description: '{{ doc("campaign_id") }}'
+        data_type: STRING
+        tests:
+          - not_null
+      - name: click_date
+        description: '{{ doc("click_date") }}'
+        data_type: TIMESTAMP
+        tests:
+          - not_null

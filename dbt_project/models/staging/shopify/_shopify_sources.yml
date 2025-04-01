@@ -1,0 +1,42 @@
+version: 2
+
+sources:
+  - name: shopify
+    description: >
+      Raw e-commerce data from Shopify platform.
+      Data is loaded via Fivetran connector with 15-minute sync frequency.
+      Contains all transactional data from our Shopify store.
+    schema: raw
+    tables:
+      - name: orders
+        description: >
+          Raw orders placed in the Shopify store.
+          Contains all order-level information including customer details,
+          shipping information, and payment details.
+        columns:
+          - name: order_id
+            description: '{{ doc("order_id") }}'
+            data_type: STRING
+            tests:
+              - unique
+              - not_null
+          - name: session_id
+            description: '{{ doc("session_id") }}'
+            data_type: STRING
+            tests:
+              - not_null
+          - name: order_date
+            description: '{{ doc("order_date") }}'
+            data_type: TIMESTAMP
+            tests:
+              - not_null
+          - name: total_price
+            description: '{{ doc("total_price") }}'
+            data_type: FLOAT
+            tests:
+              - not_null
+          - name: user_id
+            description: '{{ doc("user_id") }}'
+            data_type: STRING
+            tests:
+              - not_null
